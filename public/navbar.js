@@ -11,7 +11,7 @@ function NavBar() {
     if (token) {
       const tokenPayload = JSON.parse(atob(token.split(".")[1]));
       const userEmail = tokenPayload.email; // Email address from the token
-
+      console.log(userEmail);
       // Fetch the user's full name based on their email address
       fetch(`${apiUrl}/account/findOne/${userEmail}`)
         .then((response) => response.json())
