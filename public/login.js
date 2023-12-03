@@ -47,6 +47,10 @@ function LoginForm(props) {
           const data = JSON.parse(text);
           props.setStatus("");
           props.setShow(false);
+          localStorage.setItem("token", data.token);
+          console.log("Login successful");
+          console.log("Login successful");
+
           console.log("JSON:", data);
           // window.location.href = "#/Deposit/";
         } catch (err) {
