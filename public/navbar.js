@@ -50,7 +50,7 @@ function NavBar() {
 
   // Use an effect to update the authentication status
   React.useEffect(() => {
-    const token = getCookie("token");
+    const token = localStorage.getItem("token"); // Retrieve the token from local storage
     setAuthenticated(!!token);
   }, []);
 

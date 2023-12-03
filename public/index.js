@@ -1,7 +1,7 @@
 function Spa() {
   // Check if the JWT token is present and valid in cookies
   const isAuthenticated = () => {
-    const token = getCookie("token"); // Replace 'token' with your cookie name
+    const token = localStorage.getItem("token"); // Retrieve the token from local storage
 
     if (token) {
       // Perform token validation here (e.g., check expiration, decode)
