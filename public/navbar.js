@@ -6,7 +6,7 @@ function NavBar() {
   const [authenticated, setAuthenticated] = React.useState(false);
 
   React.useEffect(() => {
-    const token = getCookie("token");
+    const token = localStorage.getItem("token"); // Retrieve the token from local storage
 
     if (token) {
       const tokenPayload = JSON.parse(atob(token.split(".")[1]));
@@ -41,7 +41,7 @@ function NavBar() {
     // and redirect the user to the logout page or homepage
     // Here, we'll simply reload the page to clear the state
     // Remove the token from cookies
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem("token");
 
     // Redirect the user to the login page
     window.location.href = "#/login";
