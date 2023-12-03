@@ -9,6 +9,7 @@
   "author": "abel@mit.edu",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.1510.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.4",
     "express": "^4.16.3",

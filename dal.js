@@ -2,13 +2,20 @@ const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://localhost:27017";
 let db = null;
 
-// connect to mongo
-MongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
-  console.log("Connected successfully to db server");
+const atlasUrl =
+  "mongodb+srv://hyuntaenyc:89Cs578ucaPhESSs@cluster0.iujhnoo.mongodb.net/";
 
-  // connect to myproject database
-  db = client.db("myproject");
-});
+// connect to mongo
+MongoClient.connect(
+  atlasUrl,
+  { useUnifiedTopology: true },
+  function (err, client) {
+    console.log("Connected successfully to db server");
+
+    // connect to myproject database
+    db = client.db("myproject");
+  }
+);
 
 // create user account
 function create(
