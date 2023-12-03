@@ -48,7 +48,6 @@ function LoginForm(props) {
           props.setStatus("");
           props.setShow(false);
           console.log("JSON:", data);
-          window.location.href = "#/Deposit/";
         } catch (err) {
           props.setStatus(text);
           console.log("err:", text);
