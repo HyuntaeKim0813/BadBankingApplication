@@ -1,3 +1,5 @@
+const apiUrl = "http://localhost:3000";
+
 function CreateAccount() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -74,7 +76,7 @@ function CreateForm(props) {
       selectedCheckboxesStr
     );
 
-    const url = `/account/create/${name}/${email}/${password}/${generatedAccountNumber}/${selectedCheckboxesStr}`;
+    const url = `${apiUrl}/account/create/${name}/${email}/${password}/${generatedAccountNumber}/${selectedCheckboxesStr}`;
     (async () => {
       var res = await fetch(url);
       var data = await res.json();

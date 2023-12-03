@@ -1,3 +1,5 @@
+const apiUrl = "http://localhost:3000";
+
 function NavBar() {
   // State to store the user's name
   const [userName, setUserName] = React.useState("");
@@ -11,7 +13,7 @@ function NavBar() {
       const userEmail = tokenPayload.email; // Email address from the token
 
       // Fetch the user's full name based on their email address
-      fetch(`/account/findOne/${userEmail}`)
+      fetch(`${apiUrl}/account/findOne/${userEmail}`)
         .then((response) => response.json())
         .then((userData) => {
           if (userData.name) {

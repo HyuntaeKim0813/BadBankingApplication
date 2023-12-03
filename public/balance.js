@@ -1,3 +1,5 @@
+const apiUrl = "http://localhost:3000";
+
 function Balance() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -41,7 +43,7 @@ function BalanceForm(props) {
   const [balance, setBalance] = React.useState("");
 
   function handle() {
-    fetch(`/account/findOne/${email}`)
+    fetch(`${apiUrl}/account/findOne/${email}`)
       .then((response) => response.text())
       .then((text) => {
         try {

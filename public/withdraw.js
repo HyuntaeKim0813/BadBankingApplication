@@ -1,3 +1,5 @@
+const apiUrl = "http://localhost:3000";
+
 function Withdraw() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -76,7 +78,7 @@ function WithdrawForm(props) {
     }
 
     // Fetch the user's balance
-    fetch(`/account/findOne/${userEmail}`)
+    fetch(`${apiUrl}/account/findOne/${userEmail}`)
       .then((response) => response.json())
       .then((balanceData) => {
         try {
@@ -86,7 +88,7 @@ function WithdrawForm(props) {
             props.setStatus("Withdrawal amount exceeds available balance");
           } else {
             // Proceed with the withdrawal request
-            fetch(`/account/update/${userEmail}/-${numericAmount}`)
+            fetch(`${apiUrl}/account/update/${userEmail}/-${numericAmount}`)
               .then((response) => response.json())
               .then((withdrawalData) => {
                 try {
