@@ -2,10 +2,17 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 var dal = require("./dal.js");
+var cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+
 const e = require("express");
+
+// Define your secret key for JWT
+const secretKey = "your_secret_key_here"; // Replace with your actual secret key
 
 // used to serve static files from public directory
 app.use(express.static("public"));
+app.use(cookieParser());
 app.use(cors());
 
 // create user account
@@ -37,18 +44,33 @@ app.get(
   }
 );
 
-// login user
+// login user and generate JWT token
 app.get("/account/login/:email/:password", function (req, res) {
-  dal.find(req.params.email).then((user) => {
-    // if user exists, check password
-    if (user.length > 0) {
-      if (user[0].password === req.params.password) {
-        res.send(user[0]);
-      } else {
-        res.send("Login failed: wrong password");
-      }
+  const email = req.params.email;
+  const password = req.params.password;
+
+  // Check if the user exists and the password matches
+  dal.find(email).then((user) => {
+    if (user.length > 0 && user[0].password === password) {
+      // User authentication succeeded
+      const userData = {
+        email: user[0].email,
+        // Include any other user data you want in the token
+      };
+
+      // Generate a JWT token for the logged-in user
+      const token = jwt.sign(userData, secretKey, { expiresIn: "15min" });
+
+      // Set the token as a cookie in the response
+      res.cookie("token", token);
+
+      // Respond with a success message and the token
+      res.json({ message: "Login successful", token });
     } else {
-      res.send("Login failed: user not found");
+      // User authentication failed
+      res
+        .status(401)
+        .json({ message: "Login failed: wrong email or password" });
     }
   });
 });

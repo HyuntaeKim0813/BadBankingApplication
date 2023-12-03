@@ -18,6 +18,7 @@ function Withdraw() {
             setWithdrawnAmount={setWithdrawnAmount}
             setRemainingBalance={setRemainingBalance}
             setBalance={setBalance}
+            balance={balance} // Pass the balance here
           />
         ) : (
           <WithdrawMsg
@@ -36,7 +37,7 @@ function Withdraw() {
 
 function WithdrawMsg(props) {
   const { withdrawnAmount, balance } = props;
-  const remainingBalance = balance - withdrawnAmount;
+  const remainingBalance = balance;
 
   return (
     <>
@@ -50,8 +51,6 @@ function WithdrawMsg(props) {
         onClick={() => {
           props.setShow(true);
           props.setStatus("");
-          props.setWithdrawnAmount(0);
-          props.setBalance(0); // Optionally reset the balance when withdrawing again
         }}
       >
         Withdraw again
@@ -61,57 +60,68 @@ function WithdrawMsg(props) {
 }
 
 function WithdrawForm(props) {
-  const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState("");
+  const { balance } = props;
+  console.log(balance);
 
   function handle() {
-    // Fetch the user's balance
-    fetch(`/account/findOne/${email}`)
-      .then((response) => response.text())
-      .then((text) => {
-        try {
-          const data = JSON.parse(text);
-          props.setBalance(data.balance); // Update the balance state
-          props.setStatus(`User balance: ${data.balance}`);
+    const numericAmount = parseFloat(amount);
+    const token = getCookie("token"); // Retrieve stored JWT token from cookies
+    const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+    const userEmail = tokenPayload.email; // Email address from the token
+    console.log(numericAmount);
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      props.setStatus("Invalid amount");
+      return;
+    }
 
-          // Continue with withdrawal logic
-          fetch(`/account/update/${email}/-${amount}`)
-            .then((response) => response.text())
-            .then((text) => {
-              try {
-                const withdrawalData = JSON.parse(text);
-                props.setStatus("Withdrawal successful");
-                props.setWithdrawnAmount(parseFloat(amount));
-                props.setShow(false);
-                console.log("Withdrawal JSON:", withdrawalData);
-              } catch (err) {
+    // Fetch the user's balance
+    fetch(`/account/findOne/${userEmail}`)
+      .then((response) => response.json())
+      .then((balanceData) => {
+        try {
+          const userBalance = balanceData.balance;
+          console.log(userBalance);
+          if (numericAmount > userBalance) {
+            props.setStatus("Withdrawal amount exceeds available balance");
+          } else {
+            // Proceed with the withdrawal request
+            fetch(`/account/update/${userEmail}/-${numericAmount}`)
+              .then((response) => response.json())
+              .then((withdrawalData) => {
+                try {
+                  props.setWithdrawnAmount(numericAmount);
+                  props.setBalance(withdrawalData.value.balance);
+
+                  props.setShow(false);
+                } catch (error) {
+                  props.setStatus(withdrawalData.error);
+                }
+              })
+              .catch((error) => {
                 props.setStatus("Withdrawal failed");
-                console.log("Withdrawal Error:", text);
-              }
-            });
+                console.error("Withdrawal Error:", error);
+              });
+          }
         } catch (err) {
-          props.setStatus(`Error: ${text}`);
-          console.log("Error:", text);
+          props.setStatus(balanceData.error);
         }
       })
       .catch((error) => {
         props.setStatus("Error while fetching user balance.");
-        console.error("Error:", error);
+        console.error("Balance Fetch Error:", error);
       });
+  }
+
+  // Function to get cookie value by name
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
   return (
     <>
-      Email
-      <br />
-      <input
-        type="input"
-        className="form-control"
-        placeholder="Enter email"
-        value={email}
-        onChange={(e) => setEmail(e.currentTarget.value)}
-      />
-      <br />
       Amount
       <br />
       <input
@@ -125,11 +135,6 @@ function WithdrawForm(props) {
       <button type="submit" className="btn btn-light" onClick={handle}>
         Withdraw
       </button>
-      {props.balance !== "" && (
-        <div>
-          <p>{props.balance}</p>
-        </div>
-      )}
     </>
   );
 }
