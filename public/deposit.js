@@ -66,7 +66,7 @@ function DepositForm(props) {
       return;
     }
 
-    const token = getCookie("token"); // Retrieve stored JWT token from cookies
+    const token = localStorage.getItem("token"); // Retrieve the token from local storage
     const tokenPayload = JSON.parse(atob(token.split(".")[1]));
     const userEmail = tokenPayload.email; // Email address from the token
 
