@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:3000";
+const apiUrl = "https://node-mongo-api-ssux.onrender.com/";
 
 function Balance() {
   const [show, setShow] = React.useState(true);
