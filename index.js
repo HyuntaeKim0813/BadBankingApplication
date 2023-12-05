@@ -4,7 +4,6 @@ var cors = require("cors");
 var dal = require("./dal.js");
 var cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const apiUrl = "http://localhost:3000";
 
 const e = require("express");
 
@@ -110,7 +109,7 @@ app.get(`/account/all`, function (req, res) {
   });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 var port = 3000;
 app.listen(PORT);
 console.log("Running on port: " + port);

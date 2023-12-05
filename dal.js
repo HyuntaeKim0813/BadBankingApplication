@@ -2,7 +2,7 @@ const MongoClient = require("mongodb").MongoClient;
 let db = null;
 
 const atlasUrl =
-  "mongodb+srv://hyuntaenyc:89Cs578ucaPhESSs@cluster0.iujhnoo.mongodb.net/";
+  "mongodb+srv://hyuntaenyc:89Cs578ucaPhESSs@cluster0.iujhnoo.mongodb.net/?retryWrites=true&w=majority";
 
 // connect to mongo
 MongoClient.connect(
