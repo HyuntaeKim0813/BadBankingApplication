@@ -5,7 +5,7 @@ function AllData() {
 
   React.useEffect(() => {
     // fetch all accounts from API
-    fetch(`${apiUrl}/account/all`)
+    fetch(`/account/all`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data[0]);
