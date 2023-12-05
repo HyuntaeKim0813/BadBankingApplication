@@ -45,11 +45,11 @@ function CreateForm(props) {
 
   // Function to generate a random account number
   function generateRandomAccountNumber() {
-    const min = 1000000000; // Minimum account number
-    const max = 9999999999; // Maximum account number
+    const min = 1000000000;
+    const max = 9999999999;
     const randomAccountNumber =
       Math.floor(Math.random() * (max - min + 1)) + min;
-    return randomAccountNumber.toString(); // Convert it to a string
+    return randomAccountNumber.toString();
   }
 
   function handle() {
