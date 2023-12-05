@@ -1,5 +1,3 @@
-const apiUrl = "http://localhost:3000";
-
 function Login() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -40,7 +38,7 @@ function LoginForm(props) {
   const [password, setPassword] = React.useState("");
 
   function handle() {
-    fetch(`${apiUrl}/account/login/${email}/${password}`)
+    fetch(`/account/login/${email}/${password}`)
       .then((response) => response.text())
       .then((text) => {
         try {

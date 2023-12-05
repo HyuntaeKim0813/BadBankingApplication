@@ -1,5 +1,3 @@
-const apiUrl = "https://node-mongo-api-ssux.onrender.com/";
-
 function AllData() {
   const [data, setData] = React.useState([]);
 

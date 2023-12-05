@@ -1,5 +1,3 @@
-const apiUrl = "https://node-mongo-api-ssux.onrender.com/";
-
 function Balance() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -43,7 +41,7 @@ function BalanceForm(props) {
   const [balance, setBalance] = React.useState("");
 
   function handle() {
-    fetch(`${apiUrl}/account/findOne/${email}`)
+    fetch(`/account/findOne/${email}`)
       .then((response) => response.text())
       .then((text) => {
         try {

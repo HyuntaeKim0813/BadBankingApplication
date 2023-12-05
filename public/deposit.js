@@ -1,5 +1,3 @@
-const apiUrl = "http://localhost:3000";
-
 function Deposit() {
   const [show, setShow] = React.useState(true);
   const [status, setStatus] = React.useState("");
@@ -70,7 +68,7 @@ function DepositForm(props) {
     const tokenPayload = JSON.parse(atob(token.split(".")[1]));
     const userEmail = tokenPayload.email; // Email address from the token
 
-    fetch(`${apiUrl}/account/update/${userEmail}/${numericAmount}`)
+    fetch(`/account/update/${userEmail}/${numericAmount}`)
       .then((response) => response.json())
       .then((data) => {
         try {
